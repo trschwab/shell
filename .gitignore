@@ -1,3 +1,5 @@
 sensitive/
 __pycache__
 environment_variables.py
+.DS_Store
+.cache
