@@ -11,7 +11,6 @@ def getVoiceInput():
 	try:
 		#sp.volume(0)
 		#r = sr.Recognizer()
-		print("trying")
 		with sr.Microphone() as source:
 			audio = r.listen(source, phrase_time_limit=5)
 			#print("done listening")
@@ -27,7 +26,6 @@ def getVoiceInput():
 		return ""
 
 def getSpotifySearch(vox):
-	#vox = getVoiceInput()
 	if vox == "":
 		print("No input received for getSpotifySearch(), return -1")
 		return -1
@@ -43,7 +41,6 @@ def getSpotifyResults(search):
 		print("\tTrack: " + search['tracks']['items'][i]['name'])
 		print("\tArtist: " + search['tracks']['items'][i]['artists'][0]['name'])
 		print("\tURI for Track: " + search['tracks']['items'][i]['uri'])
-
 		
 		print("Is this the correct Track information? Say yes or no\n")
 		verify_info = getVerify()	
@@ -55,30 +52,6 @@ def getSpotifyResults(search):
 		else:
 			print("Ok, not correct... showing you the next result...")
 
-def getPlaylist(search):
-	playlistName = search.lower()
-	j = 0
-	while j < 100:
-		results = sp.current_user_playlists(limit=50, offset=j*50)
-		for i, item in enumerate(results['items']):
-			if item['name'].lower() == playlistName:
-				return item['uri']
-		j += 1
-	print("No playlist found of that name, please try again")
-	return -1
-
-def playPlaylist(uri):
-	sp.start_playback(context_uri=uri)
-	return 1
-
-def getAlbumUri(search):
-	result = sp.search(search)
-	return result['tracks']['items'][0]['album']['uri']
-
-def playAlbum(uri):
-	shuffleOff()
-	sp.start_playback(context_uri=uri)
-	return 1
 
 def shuffleOn():
 	sp.shuffle(True)
@@ -95,21 +68,7 @@ def spotifyPlay(voxSplit):
 		print(" ".join(voxSplit[3:]))
 		search = " ".join(voxSplit[3:])
 		result = getSpotifySearch(search)
-		getSpotifyResults(result)		
-	if voxSplit[2] == "playlist":
-		print("spotify play playlist: ")
-		print(voxSplit[3:])
-		print(" ".join(voxSplit[3:]))
-		search = " ".join(voxSplit[3:])
-		uri = getPlaylist(search)
-		playPlaylist(uri)		
-	if voxSplit[2] == "album":
-		print("spotify play album: ")
-		print(voxSplit[3:])
-		print(" ".join(voxSplit[3:]))
-		search = " ".join(voxSplit[3:])
-		uri = getAlbumUri(search)
-		playAlbum(uri)
+		getSpotifyResults(result)
 	return 1
 
 def spotifyAct(voxSplit):
