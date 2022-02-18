@@ -1,8 +1,6 @@
 from utility.utility import *
 from module.spotify import *
 
-r = sr.Recognizer()
-
 def main():
 	print("Hello")
 	#While True:
